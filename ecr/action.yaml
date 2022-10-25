@@ -1,12 +1,39 @@
 name: 'Hello World'
 description: 'Greet someone'
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  REPOSITORY:
+    description: Login to ECR registry
     required: true
-    default: 'World'
+  IMAGE_REPO_NAME: 
+    description: The name of the ECR registry
+    required: true
+  IMAGE_TAG:
+    description: The tag that builds the image with
+    required: true
+    default: latest
+  COMMIT_HASH:
+    description: Github Hash 
+    required: true
+    default: ${{ github.sha }}
+  BUILD_TIMESTAMP:
+    description: The timestamp of the image creation
+    required: true
+
 runs:
   using: "composite"
   steps:
-    - run: echo Hello ${{ inputs.who-to-greet }}.
+    -
+      name: Build ECR image - Push to Amazon ECR Registry
+      env:
+        REPOSITORY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_REPO_NAME: edison-custom-infra-container
+        IMAGE_TAG: latest
+        COMMIT_HASH: ${{ github.sha }}
+        BUILD_TIMESTAMP: ${{ steps.timestamp.outputs.timestamp }}
+      run: |
+        docker build --no-cache --build-arg REPOSITORY=$REPOSITORY -t $IMAGE_REPO_NAME:$IMAGE_TAG .
+        docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $REPOSITORY/$IMAGE_REPO_NAME:$IMAGE_TAG
+        docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $REPOSITORY/$IMAGE_REPO_NAME:$BUILD_TIMESTAMP-$COMMIT_HASH
+        docker push $REPOSITORY/$IMAGE_REPO_NAME:$IMAGE_TAG
+        docker push $REPOSITORY/$IMAGE_REPO_NAME:$BUILD_TIMESTAMP-$COMMIT_HASH
       shell: bash
