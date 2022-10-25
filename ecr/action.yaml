@@ -25,11 +25,11 @@ runs:
     -
       name: Build ECR image - Push to Amazon ECR Registry
       env:
-        REPOSITORY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_REPO_NAME: edison-custom-infra-container
-        IMAGE_TAG: latest
-        COMMIT_HASH: ${{ github.sha }}
-        BUILD_TIMESTAMP: ${{ steps.timestamp.outputs.timestamp }}
+        REPOSITORY: ${{ inputs.REPOSITORY }}
+        IMAGE_REPO_NAME: ${{ inputs.IMAGE_REPO_NAME }}
+        IMAGE_TAG: ${{ inputs.IMAGE_TAG }}
+        COMMIT_HASH: ${{ inputs.COMMIT_HASH }}
+        BUILD_TIMESTAMP: ${{ inputs.BUILD_TIMESTAMP }}
       run: |
         docker build --no-cache --build-arg REPOSITORY=$REPOSITORY -t $IMAGE_REPO_NAME:$IMAGE_TAG .
         docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $REPOSITORY/$IMAGE_REPO_NAME:$IMAGE_TAG
