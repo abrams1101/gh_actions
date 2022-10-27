@@ -33,7 +33,5 @@ runs:
       run: |
         docker build --no-cache --build-arg REPOSITORY=$REPOSITORY -t $IMAGE_REPO_NAME:$IMAGE_TAG .
         docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $REPOSITORY/$IMAGE_REPO_NAME:$IMAGE_TAG
-        docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $REPOSITORY/$IMAGE_REPO_NAME:$BUILD_TIMESTAMP-$COMMIT_HASH
         docker push $REPOSITORY/$IMAGE_REPO_NAME:$IMAGE_TAG
-        docker push $REPOSITORY/$IMAGE_REPO_NAME:$BUILD_TIMESTAMP-$COMMIT_HASH
       shell: bash
