@@ -11,13 +11,6 @@ inputs:
     description: The tag that builds the image with
     required: true
     default: latest
-  COMMIT_HASH:
-    description: Github Hash 
-    required: true
-    default: ${{ github.sha }}
-  BUILD_TIMESTAMP:
-    description: The timestamp of the image creation
-    required: true
 
 runs:
   using: "composite"
