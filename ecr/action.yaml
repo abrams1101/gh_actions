@@ -11,15 +11,14 @@ inputs:
     description: The tag that builds the image with
     required: true
     default: latest
+  BUILD_TIMESTAMP:
+    description: The timestamp of the image creation
+    required: true
 
 runs:
   using: "composite"
   steps:
 
-    - name: Get current timestamp
-      id: timestamp
-      run: echo "::set-output name=timestamp::$(date +%Y%m%d%S)"
-      shell: bash
     -
       name: Build ECR image - Push to Amazon ECR Registry
       env:
@@ -27,7 +26,7 @@ runs:
         IMAGE_REPO_NAME: ${{ inputs.IMAGE_REPO_NAME }}
         IMAGE_TAG: ${{ inputs.IMAGE_TAG }}
         COMMIT_HASH: ${{ inputs.COMMIT_HASH }}
-        BUILD_TIMESTAMP: ${{ steps.timestamp.outputs.timestamp }}}
+        BUILD_TIMESTAMP: ${{ inputs.BUILD_TIMESTAMP }}
       run: |
         docker build --no-cache --build-arg REPOSITORY=$REPOSITORY -t $IMAGE_REPO_NAME:$IMAGE_TAG .
         docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $REPOSITORY/$IMAGE_REPO_NAME:$IMAGE_TAG-$BUILD_TIMESTAMP
