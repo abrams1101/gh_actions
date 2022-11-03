@@ -15,10 +15,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-  
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
 
     - name: Get current timestamp
       id: timestamp
@@ -27,7 +23,7 @@ runs:
     -
       name: Build ECR image - Push to Amazon ECR Registry
       env:
-        REPOSITORY: ${{ steps.login-ecr.outputs.registry }}
+        REPOSITORY: ${{ inputs.REPOSITORY }}
         IMAGE_REPO_NAME: ${{ inputs.IMAGE_REPO_NAME }}
         IMAGE_TAG: ${{ inputs.IMAGE_TAG }}
         COMMIT_HASH: ${{ inputs.COMMIT_HASH }}
