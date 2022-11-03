@@ -11,9 +11,6 @@ inputs:
     description: The tag that builds the image with
     required: true
     default: latest
-  BUILD_TIMESTAMP:
-    description: The timestamp of the image creation
-    required: true
 
 runs:
   using: "composite"
