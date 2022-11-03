@@ -23,6 +23,7 @@ runs:
     - name: Get current timestamp
       id: timestamp
       run: echo "::set-output name=timestamp::$(date +%Y%m%d%S)"
+      shell: bash
     -
       name: Build ECR image - Push to Amazon ECR Registry
       env:
