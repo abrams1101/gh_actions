@@ -27,7 +27,7 @@ runs:
     -
       name: Build ECR image - Push to Amazon ECR Registry
       env:
-        REPOSITORY: ${{ inputs.REPOSITORY }}
+        REPOSITORY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_REPO_NAME: ${{ inputs.IMAGE_REPO_NAME }}
         IMAGE_TAG: ${{ inputs.IMAGE_TAG }}
         COMMIT_HASH: ${{ inputs.COMMIT_HASH }}
